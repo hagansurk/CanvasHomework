@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+ 
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Hagan's Canvas HW</title>
+</head>
+ 
+<body>
+	<canvas id="canvasDraw" width="800px" height="500px"></canvas>
+ 
+	<script>
+		var canvas = document.querySelector("#canvasDraw");
+    	var context = canvas.getContext("2d");
+    	var canPosition = getPosition(canvas);
+		var cursor1 = 0;
+		var cursor2 = 0;
+		var col = 'black'
+    	var rad = 15;
+    	function draw() {
+  			context.beginPath();
+  			context.arc(cursor1, cursor2, rad, 0, 2 * Math.PI, true);
+  			context.fillStyle = col;
+  			context.fill();
+  			requestAnimationFrame(draw);
+		}
+	
+		canvas.addEventListener("mousemove", setMousePosition, false);
+	
+		function setMousePosition(e) {
+  			cursor1 = e.clientX - canPosition.x;
+  			cursor2 = e.clientY - canPosition.y;
+  		}
+		draw();
+		function getPosition(moving) {
+  			var startX = 0;
+  			var startY = 0;
+ 
+  			while (moving) {
+    			startX += (moving.offsetLeft - moving.scrollLeft + moving.clientLeft);
+    			startY += (moving.offsetTop - moving.scrollTop + moving.clientTop);
+    			moving = moving.offsetParent;
+  			}
+  			return {
+    			x: startX,
+    			y: startY
+  			};
+		}      
+		window.addEventListener("keydown", keyPress, false);
+		function keyPress(e) {
+			switch(e.keyCode) {
+        		case 66: 
+            		col = 'blue'
+            		break;
+        		case 71:
+        			col = 'green'
+            		break;
+        		case 82:
+        			col = 'red'
+            		break;
+	        	case 89:
+	        		col = 'yellow'
+	            	break;
+	        	case 38:
+	        		rad += 1;
+	            	break;
+	       		case 40:
+	        		rad -= 1
+	            	break;    
+	        	case 32:
+	        		context.clearRect(0, 0, canvas.width, canvas.height);	            break;
+        	}   
+    	}
+	
+  	</script>
+</body>
+</html>
